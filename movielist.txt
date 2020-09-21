@@ -1,0 +1,78 @@
+"National Treasure",2h11m,Action/Adventure/Mystery
+"Letters from Iwo Jima",2h21m,War/Drama
+"Kill Bill",1h52m,Action/Martial Arts
+"The Count of Monte Cristo",2h14m,Adventure/Romance
+"3:10 to Yuma",2h02m,Western/Drama
+"Reign of Fire",1h42m,Action/Fantasy
+"OldSchool",1h33m,Comedy
+"Cast Away",2h23m,Adventure/Drama
+"IP Man",1h48m,Action/Drama
+"Rosemary's Baby",2h17m,Horror
+"Ben Hur",3h44m,Drama/Adventure
+"Hachi", 1h33m, Family/Drama
+"Con Air", 2h03m, Action/Thriller
+"Dances with Wolves", 3h56m, Western/Drama
+"The Iron Giant", 1h30m, Animation/Family
+"One flew over the Cuckoo's Nest", 2h14m, Drama/Comedy
+"Hero", 2h00m, Action/Drama
+"Girl Interrupted", 2h07m, Drama
+"The Professional", 1h50m, Action/Drama
+"American History X", 1h59m, Crime/Drama
+"The Producers", 1h30m, Musical/Comedy
+"Downfall", 2h36m, War/Drama
+"Uncut Gems", 2h15m, Crime/Dark
+"A United Kingdom", 1h51m, Romance/Drama
+"The Irishman", 3h30m, Crime
+"A Quiet Place", 1h31m , Horror
+"The Mission", 2h06m, Historical Drama
+"Emma.", 2h12m, Romance
+"Tombstone", 2h14m, Western 
+"Green Book", 2h10m, Drama
+"The Thing", 1h49m, Horror
+"Easy A", 1h 32m, Comedy
+"Stand By Me", 1h 29m , Drama
+"Casablanca", 1h 42m, Romance
+"Mommy Dearest", 2h 09m, Drama
+"Citizen Kane", 1h 59m, Drama
+"Reservoir Dogs", 1h 40m, Crime
+"Say Anything", 1h 40m, Comedy / Romance
+"High Fidelity", 1h 54m, Romance
+"Silence", 2h 41m, Drama / Epic
+"A Ghost Story", 1h 32m, Romance
+"A Royal Affair", 2h 17m, Period Romance
+"Snatch", 1h 44m, Comedy
+"Clerks", 1h 42m , Comedy
+"Mystic River", 2h 18m , Thriller / Mystery
+"The Lighthouse", 1h 50m, Horror
+"Mask of Zorro", 2h 16m, Western
+"Fistful of Dollars", 1h 40m , Western
+"Unforgiven", 2h 11m, Western
+"The Good, the Bad, and the Ugly", 3h 58m, Western 
+"Die Hard", 2h 12m , Action
+"The Godfather", 2h 58m, Crime /Drama
+"Crouching Tiger Hidden Dragon", 2h00m, Action/ Adventure
+"Alien", 1h 57m, Horror / Sci-fi
+"Sense and Sensibility", 2h 20m, Period Romance
+"Rise of the Planet of the Apes", 1h 45m, Sci-Fi/ Action
+"Planet of the Apes", 1h 55m, Sci-Fi/ Adventure
+"Saving Private Ryan", 2h 50m, Historical/ Action
+"1917", 1h 59m, Historical/ Action 
+"There's Something About Mary", 2h 14m, Romance
+"Dunkirk", 1h 46m, Historical / Action 
+"A Room WIth a View", 1h 57m, Romance 
+"Big trouble in Little China",1h 39m, Action/ Fantasy
+"Pulp Fiction", 2h 58m, Crime/Comedy
+"Dallas Buyers Club", 2h00m, Historical Drama
+"Children of Men", 1h 54m, Sci-fi/ Thriller
+"Darkest Hour", 2h05m, Historical Drama
+"Hunger", 1h 36m, Historical Drama
+"The Contender", 2h09m, Thriller
+"Three Amigos", 1h 45m, Comedy
+"Rain Man", 2h 14m, Drama
+"Sixteen Candles",1h 33m, Romance
+"She's All That",1h 37m, Romance
+"Roman Holiday",1h 58m, Romance
+"The Last Emperor",3h 39m,HistoricalDrama
+"Fists of Fury",1h32m,Action
+"Enter the Dragon",1h50m,Action
+"Jojo Rabbit",1h48m,War/Comedy
