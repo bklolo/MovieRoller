@@ -13,11 +13,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert;
@@ -35,36 +34,47 @@ public class Movies extends Application {
 	private int stageHeight = 750;
 	private int rollButtonXLoc = 287;
 	private int rollButtonYLoc = 455;
-	private int resetButtonXLoc = 162;
-	private int resetButtonYLoc = 610;
-	private int watchButtonXLoc = 420;
-	private int watchButtonYLoc = 530;
-	private int saveButtonXLoc = 340;
-	private int saveButtonYLoc = 585;
-	private int anyRadioYLoc = 40;
+	private int resetButtonXLoc = 147;
+	private int resetButtonYLoc = 573;
+	private int watchButtonXLoc = 394;
+	private int watchButtonYLoc = 496;
+	private int saveButtonXLoc = 329;
+	private int saveButtonYLoc = 575;
+	private int radioButtonsXLoc = stageWidth - 130;
+	private int anyRadioYLoc = stageHeight - 410;
 	private int filteredRadioYLoc = anyRadioYLoc + 20;
-	private int listViewXLoc = 40;
-	private int listViewYLoc = 20;
-	private String selectedItem = null;
-	private String finishedWatching = null;
+	private int listViewXLoc = 60;
+	private int rolledListViewYLoc = 100;
+	private int watchingListViewYLoc = rolledListViewYLoc + 100;
+	private int watchedListViewYLoc = watchingListViewYLoc + 50;
 	private Random rand = new Random();
+	private ArrayList<String>  selectedItem = new ArrayList<String>();
+	private ArrayList<String> toWatchedList = new ArrayList<String>();
 	private ArrayList<String> arrayOfMovies = new ArrayList<String>();				// list of movies to watch
 	private ArrayList<String> arrayOfWatched = new ArrayList<String>();				// list of movies watched
-	private ArrayList<String> arrayOfMoviesRolled = new ArrayList<String>();			// movies already rolled // use int[] to store indexes instead?
+	private ArrayList<String> arrayOfMoviesRolled = new ArrayList<String>();		// movies already rolled // use int[] to store indexes instead?
 	private ListView<String> rolledLV = new ListView<String>();
+	private Label watchedLVLabel = new Label("Movies Watched");
+	private Label watchingLVLabel = new Label("Tonight's Movie");
+	private Label movieLVLabel = new Label("Rolled Movies");
 	private ListView<String> watchedLV = new ListView<String>();
 	private ListView<String> watchingLV = new ListView<String>();
-	private RadioButton anyDuration = new RadioButton("Any length");
-	private RadioButton filteredDuration = new RadioButton("Less than 2hrs");
+	private ToggleButton filteredDuration = new RadioButton("Less than 2hrs");		// able to be selected/deselected (versus radiobutton that cannot)
 	
 	// TODO writing/deleting intems from Files works, but need to figure out how to replace real files with temps and delete temps
+	// TODO button should show shadow or highlight when hovered over, apply css to all buttons
+	// TODO dropdown for selecting a genre? maybe autofill based on all genres listed from each item
+	//rolled movie todos
+	//TODO elseif... check condition watched has been successfully clicked and roll clicked
+	//TODO decrease size of lists
+	//TODO set radio buttons to buttons?
+	//TODO for Watch button, if list has item: movetolist, else: warning
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
-
 	public void start(Stage stage) throws IOException {
-		
+		System.out.println(javafx.scene.text.Font.getFamilies());
 		FileInputStream inputstream = new FileInputStream("C:\\Users\\Bklolo\\workspace\\MoviePicker\\src\\BMO.jpg"); 
 		Image BMO = new Image(inputstream);
 		ImageView imageView = new ImageView(BMO);
@@ -73,7 +83,6 @@ public class Movies extends Application {
 		imageView.setX(0);
 		imageView.setY(0);
 //		imageView.setPreserveRatio(true); 
-		
 		// Filepath: C:\Users\Bklolo\workspace\MoviePicker
 		File movieList = new File("C:\\Users\\Bklolo\\workspace\\MoviePicker\\testmovielist.txt");					// the .txt list of movies
 		File watchedMovieList = new File("C:\\Users\\Bklolo\\workspace\\MoviePicker\\testmovieswatched.txt");		// the .txt list of movies watched
@@ -110,100 +119,51 @@ public class Movies extends Application {
 		}
 		
 		max = arrayOfMovies.size();																				// update size of array to match size of movie list
-
-		  //////////////////
-		 /////// GUI //////
-		//////////////////
-		
-		Pane pane = new Pane();
-
-		Button roll = new Button("Roll");
-		roll.setLayoutX(rollButtonXLoc);
-		roll.setLayoutY(rollButtonYLoc);
-		roll.setMinSize(60, 60);
-		roll.setOpacity(5);
-		roll.setStyle(
-                "-fx-background-radius: 100px; " +
-                "-fx-min-width: 100px; " +
-                "-fx-min-height: 100px; " +															// TODO button should show shadow or highlight when hovered over, apply css to all buttons
-                "-fx-max-width: 100px; " +
-                "-fx-max-height: 100px;" +
-                "-fx-background-color:transparent;"
-        );
-		
-		Button reset = new Button("Reset");
-		reset.setLayoutX(resetButtonXLoc);
-		reset.setLayoutY(resetButtonYLoc);
-		reset.setMinSize(70, 10);
-//		reset.setOpacity(0);
-		
-		Button watch = new Button("Watch");
-		watch.setLayoutX(watchButtonXLoc);
-		watch.setLayoutY(watchButtonYLoc);
-		watch.setMinSize(30, 30);
-//		watch.setOpacity(0);
-		
-		Button save = new Button("Save");
-		save.setLayoutX(saveButtonXLoc);
-		save.setLayoutY(saveButtonYLoc);
-		save.setMinSize(80, 80);
-//		save.setOpacity(0);
-		
-
-		ToggleGroup tg = new ToggleGroup();																	// used to detect toggle of radiobuttons
-		anyDuration.setToggleGroup(tg);
-		anyDuration.setLayoutX(100);
-		anyDuration.setLayoutY(anyRadioYLoc);
-		anyDuration.setSelected(true);
-		filteredDuration.setToggleGroup(tg);
-		filteredDuration.setLayoutX(100);
-		filteredDuration.setLayoutY(filteredRadioYLoc);
-		
-		CheckBox genreFilter = new CheckBox();
-		genreFilter.setLayoutX(350);																	// TODO dropdown for selecting a genre? maybe autofill based on all genres listed from each item
-		genreFilter.setLayoutY(250);
-		
-		rolledLV.setMaxHeight(48);
-		rolledLV.setMaxWidth(250);
-		rolledLV.setLayoutX(listViewXLoc);
-		rolledLV.setLayoutY(listViewYLoc);
-		Label movieLVLabel = new Label("Rolled Movies");
-		movieLVLabel.setLayoutX(rolledLV.getLayoutX());
-		movieLVLabel.setLayoutY(rolledLV.getLayoutY() - 20);
-		
-		watchingLV.setMaxHeight(25);
-		watchingLV.setMaxWidth(250);
-		watchingLV.setLayoutX(listViewXLoc);
-		watchingLV.setLayoutY(listViewYLoc + 100);
-		Label watchingLVLabel = new Label("Tonight's Movie");
-		watchingLVLabel.setLayoutX(watchingLV.getLayoutX());
-		watchingLVLabel.setLayoutY(watchingLV.getLayoutY() - 20);
-		
-		watchedLV.setMaxHeight(200);
-		watchedLV.setMaxWidth(250);
-		watchedLV.setLayoutX(listViewXLoc);
-		watchedLV.setLayoutY(listViewYLoc + 175);
-		Label watchedLVLabel = new Label("Movies Watched");
-		watchedLVLabel.setLayoutX(watchedLV.getLayoutX());
-		watchedLVLabel.setLayoutY(watchedLV.getLayoutY() - 20);
-//		watchedLV.getStylesheets().add("C:\\Users\\Bklolo\\workspace\\MoviePicker\\src\\test.css");
-		
 		for(String str : arrayOfWatched){
 			watchedLV.getItems().add(str);
 		}
+		
+		 /////// GUI //////
+		
+		Pane pane = new Pane();
+		
+		Button roll = new Button("Roll");
+		buttonProperties(roll, rollButtonXLoc, rollButtonYLoc, 5, "100","100","100","100","100","700");
+		Button reset = new Button("Reset");
+		buttonProperties(reset, resetButtonXLoc, resetButtonYLoc, 5, "15","100","25","40","10","700");
+		Button watch = new Button("Watch");
+		buttonProperties(watch, watchButtonXLoc, watchButtonYLoc, 5, "50","50","50","50","50","700");
+		Button save = new Button("Save");
+		buttonProperties(save, saveButtonXLoc, saveButtonYLoc, 5, "100","100","100","100","100","700");
+
+		filteredDuration.setLayoutX(radioButtonsXLoc);
+		filteredDuration.setLayoutY(filteredRadioYLoc);
+
+//		CheckBox genreFilter = new CheckBox();
+//		genreFilter.setLayoutX(350);												// still needs to be implemented; removed from pane until then											
+//		genreFilter.setLayoutY(250);
+		
+		// ListView properties
+		listViewProperties(rolledLV, movieLVLabel, 48, 250, listViewXLoc, rolledListViewYLoc);
+		listViewProperties(watchingLV, watchingLVLabel, 25, 250, listViewXLoc, watchingListViewYLoc);
+		listViewProperties(watchedLV, watchedLVLabel, 48, 250, listViewXLoc, watchedListViewYLoc);
 		
 		rolledLV.setOnMouseClicked(new EventHandler<MouseEvent>() 
 		{
 		    @Override
 		    public void handle(MouseEvent event) 
 		    {
-		    	selectedItem = rolledLV.getSelectionModel().getSelectedItem();						
-		    	if(selectedItem != null)
+		    	if(!rolledLV.getSelectionModel().isEmpty())														// if Rolled LV isn't empty
 		    	{
-		    		if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2)							// if left mouse double clicked
+		    		if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2)					// and if left mouse double clicked
 			        {
-			    		moveFromToLV(selectedItem, rolledLV, watchingLV);												// remove selected item from movie LV and add to watching LV
-			        }	
+				    	if(watchingLV.getSelectionModel().isEmpty())											// and if Watching LV is empty
+				    	{
+					    	String qwer = rolledLV.getSelectionModel().getSelectedItem();						// get selected item
+					    	selectedItem.add(qwer);																// add it to Selected LV
+				    		moveFromToLV(selectedItem, rolledLV, watchingLV);									// remove selected item from movie LV and add to watching LV
+				        }
+		    		}
 		    	}
 		    }
 		});
@@ -213,27 +173,27 @@ public class Movies extends Application {
 		    @Override
 		    public void handle(MouseEvent event) 
 		    {
-		    	selectedItem = watchingLV.getSelectionModel().getSelectedItem();						
+				for(String asdf : watchingLV.getItems()){
+					toWatchedList.add(asdf);
+				}
 		    	if(selectedItem != null)
 		    	{
 		    		if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2)							// if left mouse double clicked
 			        {
 			    		moveFromToLV(selectedItem, watchingLV, rolledLV);											// remove selected item from movie LV and add to watching LV
+			    		selectedItem.clear();
 			        }	
 		    	}
 		    }
 		});
-		pane.getChildren().addAll(imageView, roll, reset, watch, save, anyDuration, filteredDuration, genreFilter, movieLVLabel, rolledLV, watchedLV, watchingLV, watchedLVLabel, watchingLVLabel);
-		Scene scene = new Scene(pane);
-//		scene.setFill(backgroundColor);
-		
+
 		// BUTTON handlers
 		roll.setOnAction(new EventHandler<ActionEvent>() {									
 			@Override
 			public void handle(ActionEvent e) {
 				if(watchingLV.getItems().isEmpty()){															// roll only if watchingLV is empty
 					RollMovie();
-				}				
+				}
 			}
 		});
 		reset.setOnAction(new EventHandler<ActionEvent>() 
@@ -247,21 +207,24 @@ public class Movies extends Application {
 			}
 		});
 		watch.setOnAction(new EventHandler<ActionEvent>() 
-		{									
+		{ 
 			@Override
 			public void handle(ActionEvent e) {
-				if(watchingLV.getSelectionModel().getSelectedItem() != null){
-					finishedWatching = watchingLV.getSelectionModel().getSelectedItem();
-					if(!watchingLV.getItems().isEmpty()){
-						moveFromToLV(finishedWatching, watchingLV, watchedLV);
-						updateArrays(finishedWatching);
+
+					if(watchingLV.getItems().isEmpty()){
+						Alert alert = new Alert(AlertType.INFORMATION);
+						Toolkit.getDefaultToolkit().beep();
+						alert.setHeaderText(null);
+						alert.setContentText("Select a movie to watch.");
+						alert.showAndWait();
+					} else{
+					for(String asdf : watchingLV.getItems()){
+						toWatchedList.add(asdf);
 					}
-				} else{
-					Alert alert = new Alert(AlertType.INFORMATION);
-					Toolkit.getDefaultToolkit().beep();
-					alert.setHeaderText(null);
-					alert.setContentText("Select a movie to watch.");
-					alert.showAndWait();
+					
+					updateArrays(toWatchedList);
+					moveFromToLV(toWatchedList, watchingLV, watchedLV);
+					
 				}
 			}
 		});
@@ -276,6 +239,12 @@ public class Movies extends Application {
 			}
 		});
 
+		pane.getChildren().addAll(imageView, roll, reset, watch, save, filteredDuration, movieLVLabel, rolledLV, watchedLV, watchingLV, watchedLVLabel, watchingLVLabel);
+		Scene scene = new Scene(pane);
+		// reference CSS file
+		scene.getStylesheets().add("test.css");
+//		scene.setFill(backgroundColor);
+		
 		stage.setMinWidth(stageWidth + 8);
 		stage.setMaxWidth(stageWidth);
 		stage.setMinHeight(stageHeight);
@@ -295,8 +264,7 @@ public class Movies extends Application {
 		String removedTitle = selectedMovie.substring(indexOfEndQuote + 1);						// remove up to second apostrophe of string
 		String removedTitleTrimmed = removedTitle.trim().replaceAll("\\s", "");					// remove all whitespace
 		String time = removedTitleTrimmed.substring(0, 5);										// store duration of movie
-		String genre = removedTitleTrimmed.substring(6, removedTitleTrimmed.length());			
-		
+//		String genre = removedTitleTrimmed.substring(6, removedTitleTrimmed.length());			
 
 		if (count < 2) {
 			count += 1;
@@ -325,6 +293,15 @@ public class Movies extends Application {
 				Reroll();
 			}
 		}
+		else{
+
+			
+			Alert alert = new Alert(AlertType.INFORMATION);
+			Toolkit.getDefaultToolkit().beep();
+			alert.setHeaderText(null);
+			alert.setContentText("Select a movie.");
+			alert.showAndWait();
+		}
 	}
 
 	private void Reroll() {
@@ -333,21 +310,23 @@ public class Movies extends Application {
 		RollMovie();
 	}
 	
-	private void moveFromToLV(String selectedItem, ListView<String> from, ListView<String> to) {
+	private void moveFromToLV(ArrayList<String> fromSelectedItem, ListView<String> from, ListView<String> to) {
+		String asdf = fromSelectedItem.get(0);
 		// remove item from movieList
-		from.getItems().remove(selectedItem);
-           // add item to listViewOfWatched listview
-		to.getItems().add(selectedItem);
-
+		from.getItems().remove(asdf);
+		// add item to listViewOfWatched listview
+		to.getItems().add(asdf);
+		
 	}
 	
-	private void updateArrays(String finishedWatching)
+	private void updateArrays(ArrayList<String> watchingSelected)
 	{
 		int index = 0;
 		String movie = "";
 		for(String item : arrayOfMovies)
 		{																// for each string in arrayOfMovies
-			if(item.contains(finishedWatching))
+			String finished = watchingSelected.get(0);
+			if(item.contains(finished))
 			{															// if 'a' contains "selectedItem"
 				index = arrayOfMovies.indexOf(item);					// store the index
 				movie = arrayOfMovies.get(index);
@@ -367,6 +346,38 @@ public class Movies extends Application {
 			System.out.println(str);
 		}
 	
+	}
+	
+	private void listViewProperties(ListView<String> listview, Label label, int maxHeight, int maxWidth, int layoutX, int layoutY){
+		listview.setMaxHeight(maxHeight);
+		listview.setMaxWidth(maxWidth);
+		listview.setLayoutX(layoutX);
+		listview.setLayoutY(layoutY);
+		listview.setStyle("-fx-font-family: Marlett;" + 
+				"-fx-font-size: 12;"
+				);
+		label.setLayoutX(listview.getLayoutX());
+		label.setLayoutY(listview.getLayoutY() - 20);
+		label.setStyle("-fx-font-family: Bell MT;" + 
+				"-fx-font-size: 12;" +
+				"-fx-font-weight: bold;"
+				);
+	}
+	
+	private void buttonProperties(Button button, int buttonXLoc, int buttonYLoc, int opacity, String radius,
+									String minWidth, String minHeight, String maxWidth, String maxHeight, String fontWeight){
+		button.setLayoutX(buttonXLoc);
+		button.setLayoutY(buttonYLoc);
+		button.setOpacity(opacity);
+		button.setStyle("-fx-background-radius: 100px; " +
+                "-fx-min-width: 100px; " +
+                "-fx-min-height: 100px; " +														
+                "-fx-max-width: 100px; " +
+                "-fx-max-height: 100px;" +
+                "-fx-font-family: Marlett;" + "-fx-font-size: 12;" +
+                "-fx-background-color: transparent;"
+                );
+//        "-fx-effect: innershadow( gaussian, rgba( 0, 0, 0, 0.5 ), 10, 0, 5, 5 );"
 	}
 
 	private void saveToFiles(File movieList, File watchedMovieList) throws IOException
