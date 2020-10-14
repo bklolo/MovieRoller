@@ -1,2 +1,2 @@
 # MovieRoller
-Randomly rolls a movie in a CSV list
+Randomly rolls a movie from a CSV file.
