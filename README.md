@@ -1,2 +1,2 @@
 # MovieRoller
-Randomly rolls a movie from a CSV file.
+A java application that randomly rolls a movie from a user created CSV file.
